@@ -11,6 +11,7 @@ This repository contains algorithms and data structures implemented in C# for ed
 ## Overview  
 * [Algorithms](./Algorithms/)
 	* [Data Compression](<./Algorithms/DataCompression>)
+		* [Burrows-Wheeler transform](<./Algorithms/DataCompression/BurrowsWheelerTransform.cs>)
 		* [Huffman Compressor](<./Algorithms/DataCompression/HuffmanCompressor.cs>)
 		* [Shannon-Fano Compressor](<./Algorithms/DataCompression/ShannonFanoCompressor.cs>)
 	* [Encoders](./Algorithms/Encoders/)
@@ -83,6 +84,10 @@ This repository contains algorithms and data structures implemented in C# for ed
 	* [Doubly Linked List](./DataStructures/DoublyLinkedList)
 	* [Min-Max Heap](./DataStructures/MinMaxHeap.cs)
 	* [Timeline](./DataStructures/Timeline.cs)
+	* [Segment Trees](./DataStructures/SegmentTrees)
+		* [Segment Tree](./DataStructures/SegmentTrees/SegmentTree.cs)
+		* [Segment Tree Multiplication](./DataStructures/SegmentTrees/SegmentTreeApply.cs)
+		* [Segment Tree Update](./DataStructures/SegmentTrees/SegmentTreeUpdate.cs)
 	* [Array-based Queue](./DataStructures/ArrayBasedQueue.cs)
 	* [List-based Queue](./DataStructures/ListBasedQueue.cs)
 	* [Stack-based Queue](./DataStructures/StackBasedQueue.cs)
