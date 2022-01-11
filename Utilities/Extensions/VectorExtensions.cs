@@ -5,7 +5,7 @@ namespace Utilities.Extensions
     public static class VectorExtensions
     {
         /// <summary>
-        /// Makes a copy of a vector. Changes to the copy should not affect the original.
+        ///     Makes a copy of a vector. Changes to the copy should not affect the original.
         /// </summary>
         /// <param name="vector">The vector.</param>
         /// <returns>The copy.</returns>
@@ -21,7 +21,7 @@ namespace Utilities.Extensions
         }
 
         /// <summary>
-        /// Computes the outer product of two vectors.
+        ///     Computes the outer product of two vectors.
         /// </summary>
         /// <param name="lhs">The LHS vector.</param>
         /// <param name="rhs">The RHS vector.</param>
@@ -41,7 +41,7 @@ namespace Utilities.Extensions
         }
 
         /// <summary>
-        /// Computes the dot product of two vectors.
+        ///     Computes the dot product of two vectors.
         /// </summary>
         /// <param name="lhs">The LHS vector.</param>
         /// <param name="rhs">The RHS vector.</param>
@@ -64,7 +64,7 @@ namespace Utilities.Extensions
         }
 
         /// <summary>
-        /// Computes the magnitude of a vector.
+        ///     Computes the magnitude of a vector.
         /// </summary>
         /// <param name="vector">The vector.</param>
         /// <returns>The magnitude.</returns>
@@ -76,7 +76,7 @@ namespace Utilities.Extensions
         }
 
         /// <summary>
-        /// Returns the scaled vector.
+        ///     Returns the scaled vector.
         /// </summary>
         /// <param name="vector">The vector.</param>
         /// <param name="factor">Scale factor.</param>
@@ -91,9 +91,9 @@ namespace Utilities.Extensions
 
             return result;
         }
-        
+
         /// <summary>
-        /// Transpose 1d row vector to column vector.
+        ///     Transpose 1d row vector to column vector.
         /// </summary>
         /// <param name="source">Input 1d vector.</param>
         /// <returns>Column vector.</returns>
@@ -110,7 +110,7 @@ namespace Utilities.Extensions
         }
 
         /// <summary>
-        /// Transpose column vector to 1d row vector.
+        ///     Transpose column vector to 1d row vector.
         /// </summary>
         /// <param name="source">Input column vector.</param>
         /// <returns>Row vector.</returns>
@@ -130,6 +130,24 @@ namespace Utilities.Extensions
             }
 
             return rowVector;
+        }
+
+        /// <summary>
+        ///     Generates a diagonal matrix from an specified vector.
+        /// </summary>
+        /// <param name="vector">The input vector.</param>
+        /// <returns>A Diagonal matrix.</returns>
+        public static double[,] ToDiagonalMatrix(this double[] vector)
+        {
+            var len = vector.Length;
+            var result = new double[len, len];
+
+            for (var i = 0; i < len; i++)
+            {
+                result[i, i] = vector[i];
+            }
+
+            return result;
         }
     }
 }

@@ -3,36 +3,35 @@
 namespace Algorithms.Sorters.Comparison
 {
     /// <summary>
-    /// Class that implements pancake sort algorithm.
+    ///     Class that implements pancake sort algorithm.
     /// </summary>
     /// <typeparam name="T">Type of array element.</typeparam>
     public class PancakeSorter<T> : IComparisonSorter<T>
     {
         /// <summary>
-        /// Sorts array using specified comparer,
-        /// internal, in-place, stable,
-        /// time complexity: O(n^2),
-        /// space complexity: O(1),
-        /// where n - array length.
+        ///     Sorts array using specified comparer,
+        ///     internal, in-place, stable,
+        ///     time complexity: O(n^2),
+        ///     space complexity: O(1),
+        ///     where n - array length.
         /// </summary>
         /// <param name="array">Array to sort.</param>
         /// <param name="comparer">Compares elements.</param>
-        ///
         public void Sort(T[] array, IComparer<T> comparer)
         {
             var n = array.Length;
 
             // Start from the complete array and one by one
             // reduce current size by one
-            for (var curr_size = n; curr_size > 1; --curr_size)
+            for (var currSize = n; currSize > 1; --currSize)
             {
                 // Find index of the maximum element in
                 // array[0..curr_size-1]
-                var mi = FindMax(array, curr_size, comparer);
+                var mi = FindMax(array, currSize, comparer);
 
                 // Move the maximum element to end of current array
                 // if it's not already at  the end
-                if (mi != curr_size - 1)
+                if (mi != currSize - 1)
                 {
                     // To move to the end, first move maximum
                     // number to beginning
@@ -40,7 +39,7 @@ namespace Algorithms.Sorters.Comparison
 
                     // Now move the maximum number to end by
                     // reversing current array
-                    Flip(array, curr_size - 1);
+                    Flip(array, currSize - 1);
                 }
             }
         }

@@ -1,6 +1,9 @@
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
+using FluentAssertions.Execution;
+using NUnit.Framework;
 
 namespace DataStructures.Tests
 {
@@ -15,9 +18,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.Count == 5);
+
+            timeline.Count
+                .Should()
+                .Be(5);
         }
 
         [Test]
@@ -29,9 +35,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.TimesCount == timeline.GetAllTimes().Length);
+
+            timeline.TimesCount
+                .Should()
+                .Be(timeline.GetAllTimes().Length);
         }
 
         [Test]
@@ -43,38 +52,56 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.ValuesCount == timeline.GetAllValues().Length);
+
+            timeline.ValuesCount
+                .Should()
+                .Be(timeline.GetAllValues().Length);
         }
 
         [Test]
         public static void IndexerGetTest()
         {
+            const string eventName = "TestTime2";
+            var eventDate = new DateTime(2000, 1, 1);
+
             var timeline = new Timeline<string>
             {
                 { new DateTime(1995, 1, 1), "TestTime1" },
-                { new DateTime(2000, 1, 1), "TestTime2" },
+                { eventDate, eventName },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline[new DateTime(2000, 1, 1)][0] == "TestTime2");
+
+            timeline[eventDate][0]
+                .Should()
+                .Be(eventName);
         }
 
         [Test]
         public static void IndexerSetTest()
         {
+            var eventDate = new DateTime(2000, 1, 1);
+
+            const string formerEventName = "TestTime2";
+            const string eventName = "TestTime2Modified";
+
             var timeline = new Timeline<string>
             {
                 { new DateTime(1995, 1, 1), "TestTime1" },
-                { new DateTime(2000, 1, 1), "TestTime2" },
+                { eventDate, formerEventName },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            timeline[new DateTime(2000, 1, 1)] = new[] { "TestDate2Modified" };
-            Assert.IsTrue(timeline[new DateTime(2000, 1, 1)][0] == "TestDate2Modified");
+
+            timeline[new DateTime(2000, 1, 1)] = new[] { eventName };
+
+            timeline[new DateTime(2000, 1, 1)][0]
+                .Should()
+                .Be(eventName);
         }
 
         [Test]
@@ -86,18 +113,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var timeline2 = new Timeline<string>
             {
                 { new DateTime(1995, 1, 1), "TestTime1" },
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            // timeline1 is equal to timeline2
-            Assert.IsTrue(timeline1.Equals(timeline2));
+
+            (timeline1 == timeline2)
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -109,10 +139,14 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             timeline.Clear();
-            Assert.IsTrue(timeline.Count == 0);
+
+            timeline.Count
+                .Should()
+                .Be(0);
         }
 
         [Test]
@@ -124,16 +158,31 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var array = new (DateTime Time, string Value)[timeline.Count];
             timeline.CopyTo(array, 0);
-            Assert.IsTrue(timeline.Count == array.Length);
-            int i = 0;
-            foreach (var (time, value) in timeline)
+
+            timeline.Count
+                .Should()
+                .Be(array.Length);
+
+            var i = 0;
+            using (new AssertionScope())
             {
-                Assert.IsTrue(time == array[i].Time && value == array[i].Value);
-                i++;
+                foreach (var (time, value) in timeline)
+                {
+                    array[i].Time
+                        .Should()
+                        .Be(time);
+
+                    array[i].Value
+                        .Should()
+                        .Be(value);
+
+                    ++i;
+                }
             }
         }
 
@@ -146,29 +195,41 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var times = timeline.GetAllTimes();
-            int i = 0;
-            foreach (var (time, value) in timeline)
+
+            var i = 0;
+            using (new AssertionScope())
             {
-                Assert.IsTrue(time == times[i]);
-                i++;
+                foreach (var (time, _) in timeline)
+                {
+                    times[i++]
+                        .Should()
+                        .Be(time);
+                }
             }
         }
 
         [Test]
         public static void GetTimesByValueTest()
         {
+            var eventDate = new DateTime(2000, 1, 1);
+            const string eventName = "TestTime2";
+
             var timeline = new Timeline<string>
             {
                 { new DateTime(1995, 1, 1), "TestTime1" },
-                { new DateTime(2000, 1, 1), "TestTime2" },
+                { eventDate, eventName },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.GetTimesByValue("TestTime2")[0] == new DateTime(2000, 1, 1));
+
+            timeline.GetTimesByValue(eventName)[0]
+                .Should()
+                .Be(eventDate);
         }
 
         [Test]
@@ -180,12 +241,25 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var times = timeline.GetTimesBefore(new DateTime(2003, 1, 1));
-            Assert.IsTrue(times.Length == 2);
-            Assert.IsTrue(times[0] == new DateTime(1995, 1, 1));
-            Assert.IsTrue(times[1] == new DateTime(2000, 1, 1));
+
+            using (new AssertionScope())
+            {
+                times.Length
+                    .Should()
+                    .Be(2);
+
+                times[0]
+                    .Should()
+                    .Be(new DateTime(1995, 1, 1));
+
+                times[1]
+                    .Should()
+                    .Be(new DateTime(2000, 1, 1));
+            }
         }
 
         [Test]
@@ -197,13 +271,29 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var times = timeline.GetTimesAfter(new DateTime(2003, 1, 1));
-            Assert.IsTrue(times.Length == 3);
-            Assert.IsTrue(times[0] == new DateTime(2005, 1, 1));
-            Assert.IsTrue(times[1] == new DateTime(2010, 1, 1));
-            Assert.IsTrue(times[2] == new DateTime(2015, 1, 1));
+
+            using (new AssertionScope())
+            {
+                times.Length
+                    .Should()
+                    .Be(3);
+
+                times[0]
+                    .Should()
+                    .Be(new DateTime(2005, 1, 1));
+
+                times[1]
+                    .Should()
+                    .Be(new DateTime(2010, 1, 1));
+
+                times[2]
+                    .Should()
+                    .Be(new DateTime(2015, 1, 1));
+            }
         }
 
         [Test]
@@ -215,14 +305,20 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var values = timeline.GetAllValues();
-            int i = 0;
-            foreach (var (time, value) in timeline)
+
+            var i = 0;
+            using (new AssertionScope())
             {
-                Assert.IsTrue(value == values[i]);
-                i++;
+                foreach (var (_, value) in timeline)
+                {
+                    values[i++]
+                        .Should()
+                        .Be(value);
+                }
             }
         }
 
@@ -235,9 +331,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.GetValuesByTime(new DateTime(2000, 1, 1))[0] == "TestTime2");
+
+            timeline.GetValuesByTime(new DateTime(2000, 1, 1))[0]
+                .Should()
+                .Be("TestTime2");
         }
 
         [Test]
@@ -249,12 +348,25 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var array = timeline.GetValuesBefore(new DateTime(2003, 1, 1)).ToArray();
-            Assert.IsTrue(array.Length == 2);
-            Assert.IsTrue(array[0].Time == new DateTime(1995, 1, 1));
-            Assert.IsTrue(array[1].Time == new DateTime(2000, 1, 1));
+
+            using (new AssertionScope())
+            {
+                array.Length
+                    .Should()
+                    .Be(2);
+
+                array[0].Time
+                    .Should()
+                    .Be(new DateTime(1995, 1, 1));
+
+                array[1].Time
+                    .Should()
+                    .Be(new DateTime(2000, 1, 1));
+            }
         }
 
         [Test]
@@ -266,13 +378,29 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var array = timeline.GetValuesAfter(new DateTime(2003, 1, 1)).ToArray();
-            Assert.IsTrue(array.Length == 3);
-            Assert.IsTrue(array[0].Time == new DateTime(2005, 1, 1));
-            Assert.IsTrue(array[1].Time == new DateTime(2010, 1, 1));
-            Assert.IsTrue(array[2].Time == new DateTime(2015, 1, 1));
+
+            using (new AssertionScope())
+            {
+                array.Length
+                    .Should()
+                    .Be(3);
+
+                array[0].Time
+                    .Should()
+                    .Be(new DateTime(2005, 1, 1));
+
+                array[1].Time
+                    .Should()
+                    .Be(new DateTime(2010, 1, 1));
+
+                array[2].Time
+                    .Should()
+                    .Be(new DateTime(2015, 1, 1));
+            }
         }
 
         [Test]
@@ -284,10 +412,14 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 1, 1, 10, 0, 0, 250), "TestTime2" },
                 { new DateTime(1995, 1, 1, 10, 0, 0, 250), "TestTime3" },
                 { new DateTime(2005, 1, 1, 10, 0, 0, 750), "TestTime4" },
-                { new DateTime(2015, 1, 1, 10, 0, 0, 750), "TestTime5" }
+                { new DateTime(2015, 1, 1, 10, 0, 0, 750), "TestTime5" },
             };
+
             var query = timeline.GetValuesByMillisecond(750);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            query.Count
+                .Should()
+                .Be(2);
         }
 
         [Test]
@@ -299,10 +431,21 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 1, 1, 10, 0, 5), "TestTime2" },
                 { new DateTime(1995, 1, 1, 10, 0, 5), "TestTime3" },
                 { new DateTime(2005, 1, 1, 10, 0, 20), "TestTime4" },
-                { new DateTime(2015, 1, 1, 10, 0, 20), "TestTime5" }
+                { new DateTime(2015, 1, 1, 10, 0, 20), "TestTime5" },
             };
+
             var query = timeline.GetValuesBySecond(20);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -314,10 +457,21 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 1, 1, 10, 15, 0), "TestTime2" },
                 { new DateTime(1995, 1, 1, 10, 15, 0), "TestTime3" },
                 { new DateTime(2005, 1, 1, 10, 40, 0), "TestTime4" },
-                { new DateTime(2015, 1, 1, 10, 40, 0), "TestTime5" }
+                { new DateTime(2015, 1, 1, 10, 40, 0), "TestTime5" },
             };
+
             var query = timeline.GetValuesByMinute(40);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -329,10 +483,21 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 1, 1, 7, 0, 0), "TestTime2" },
                 { new DateTime(1995, 1, 1, 7, 0, 0), "TestTime3" },
                 { new DateTime(2005, 1, 1, 16, 0, 0), "TestTime4" },
-                { new DateTime(2015, 1, 1, 16, 0, 0), "TestTime5" }
+                { new DateTime(2015, 1, 1, 16, 0, 0), "TestTime5" },
             };
+
             var query = timeline.GetValuesByHour(16);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -344,10 +509,21 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 1, 10), "TestTime2" },
                 { new DateTime(1995, 1, 10), "TestTime3" },
                 { new DateTime(2005, 1, 20), "TestTime4" },
-                { new DateTime(2015, 1, 20), "TestTime5" }
+                { new DateTime(2015, 1, 20), "TestTime5" },
             };
+
             var query = timeline.GetValuesByDay(20);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -359,10 +535,21 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 1, 1, 10, 30, 15, 500), "TestTime2" },
                 { new DateTime(1995, 1, 1, 10, 30, 15, 500), "TestTime3" },
                 { new DateTime(2005, 1, 1, 21, 15, 40, 600), "TestTime4" },
-                { new DateTime(2015, 1, 1, 21, 15, 40, 600), "TestTime5" }
+                { new DateTime(2015, 1, 1, 21, 15, 40, 600), "TestTime5" },
             };
+
             var query = timeline.GetValuesByTimeOfDay(new TimeSpan(0, 21, 15, 40, 600));
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -374,10 +561,21 @@ namespace DataStructures.Tests
                 { new DateTime(2015, 2, 2), "TestTime2" }, //Monday
                 { new DateTime(2015, 1, 6), "TestTime3" }, //Tuesday
                 { new DateTime(2015, 1, 7), "TestTime4" }, //Wednesday
-                { new DateTime(2015, 1, 8), "TestTime5" }  //Thursday
+                { new DateTime(2015, 1, 8), "TestTime5" }, //Thursday
             };
+
             var query = timeline.GetValuesByDayOfWeek(DayOfWeek.Monday);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -385,14 +583,25 @@ namespace DataStructures.Tests
         {
             var timeline = new Timeline<string>
             {
-                { new DateTime(1985, 1, 3), "TestTime1" },  //3rd day of year
-                { new DateTime(1990, 1, 7), "TestTime2" },  //7th day of year
+                { new DateTime(1985, 1, 3), "TestTime1" }, //3rd day of year
+                { new DateTime(1990, 1, 7), "TestTime2" }, //7th day of year
                 { new DateTime(1995, 1, 22), "TestTime3" }, //22th day of year
-                { new DateTime(2000, 2, 1), "TestTime4" },  //32th day of year
-                { new DateTime(2005, 2, 1), "TestTime5" }   //32th day of year
+                { new DateTime(2000, 2, 1), "TestTime4" }, //32th day of year
+                { new DateTime(2005, 2, 1), "TestTime5" }, //32th day of year
             };
+
             var query = timeline.GetValuesByDayOfYear(32);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -404,10 +613,21 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 2, 1), "TestTime2" },
                 { new DateTime(1995, 3, 1), "TestTime3" },
                 { new DateTime(2005, 4, 1), "TestTime4" },
-                { new DateTime(2015, 4, 1), "TestTime5" }
+                { new DateTime(2015, 4, 1), "TestTime5" },
             };
+
             var query = timeline.GetValuesByMonth(4);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
@@ -419,46 +639,112 @@ namespace DataStructures.Tests
                 { new DateTime(1990, 2, 1), "TestTime2" },
                 { new DateTime(1995, 1, 2), "TestTime3" },
                 { new DateTime(2005, 2, 1), "TestTime4" },
-                { new DateTime(2005, 1, 2), "TestTime5" }
+                { new DateTime(2005, 1, 2), "TestTime5" },
             };
+
             var query = timeline.GetValuesByYear(2005);
-            Assert.IsTrue(query.Count == 2 && timeline.Contains(query));
+
+            using (new AssertionScope())
+            {
+                query.Count
+                    .Should()
+                    .Be(2);
+
+                timeline
+                    .Should()
+                    .Contain(query);
+            }
         }
 
         [Test]
         public static void AddDateTimeAndTValueTest() //void Add(DateTime time, TValue value)
         {
+            var eventDate = new DateTime(2015, 1, 1);
+            const string eventName = "TestTime";
+
             var timeline = new Timeline<string>();
-            timeline.Add(new DateTime(2015, 1, 1), "TestTime");
-            Assert.IsTrue(timeline.Count == 1 && timeline[new DateTime(2015, 1, 1)][0] == "TestTime");
+
+            timeline.Add(eventDate, eventName);
+
+            timeline.Count
+                .Should()
+                .Be(1);
+
+            timeline[eventDate][0]
+                .Should()
+                .Be(eventName);
         }
 
         [Test]
         public static void AddDateTimeAndTValueArrayTest() //void Add(params (DateTime, TValue)[] timeline)
         {
+            var eventDate1 = new DateTime(2015, 1, 1);
+            const string eventName1 = "TestTime1";
+
+            var eventDate2 = new DateTime(1750, 1, 1);
+            const string eventName2 = "TestTime2";
+
             var timeline = new Timeline<string>();
-            timeline.Add((new DateTime(2015, 1, 1), "TestTime1"), (new DateTime(1750, 1, 1), "TestTime2"));
-            Assert.IsTrue(
-                timeline.Count == 2 &&
-                timeline[new DateTime(2015, 1, 1)][0] == "TestTime1" &&
-                timeline[new DateTime(1750, 1, 1)][0] == "TestTime2"
-            );
+
+            timeline.Add(
+                (eventDate1, eventName1),
+                (eventDate2, eventName2));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(2);
+
+                timeline[eventDate1][0]
+                    .Should()
+                    .Be(eventName1);
+
+                timeline[eventDate2][0]
+                    .Should()
+                    .Be(eventName2);
+            }
         }
 
         [Test]
         public static void AddTimelineTest() //void Add(Timeline<TValue> timeline)
         {
+            var eventDate = new DateTime(2015, 1, 1);
+            const string eventName = "TestTime";
+
             var timeline = new Timeline<string>();
-            timeline.Add(new Timeline<string>(new DateTime(2015, 1, 1), "TestTime"));
-            Assert.IsTrue(timeline.Count == 1 && timeline[new DateTime(2015, 1, 1)][0] == "TestTime");
+
+            timeline.Add(new Timeline<string>(eventDate, eventName));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(1);
+
+                timeline[eventDate][0]
+                    .Should()
+                    .Be(eventName);
+            }
         }
 
         [Test]
         public static void AddNowTest()
         {
             var timeline = new Timeline<string>();
+
             timeline.AddNow("Now");
-            Assert.IsTrue(timeline.Count == 1 && timeline.ContainsValue("Now"));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(1);
+
+                timeline.ContainsValue("Now")
+                    .Should()
+                    .BeTrue();
+            }
         }
 
         [Test]
@@ -470,9 +756,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.Contains(new DateTime(2000, 1, 1), "TestTime2"));
+
+            timeline.Contains(new DateTime(2000, 1, 1), "TestTime2")
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -484,9 +773,14 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.Contains((new DateTime(1995, 1, 1), "TestTime1"), (new DateTime(2000, 1, 1), "TestTime2")));
+
+            timeline.Contains(
+                    (new DateTime(1995, 1, 1), "TestTime1"),
+                    (new DateTime(2000, 1, 1), "TestTime2"))
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -498,9 +792,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.Contains(new Timeline<string>(new DateTime(2000, 1, 1), "TestTime2")));
+
+            timeline.Contains(new Timeline<string>(new DateTime(2000, 1, 1), "TestTime2"))
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -512,9 +809,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.ContainsTime(new DateTime(2000, 1, 1)));
+
+            timeline.ContainsTime(new DateTime(2000, 1, 1))
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -526,9 +826,12 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            Assert.IsTrue(timeline.ContainsValue("TestTime1"));
+
+            timeline.ContainsValue("TestTime1")
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -540,10 +843,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             timeline.Remove(new DateTime(2000, 1, 1), "TestTime2");
-            Assert.IsTrue(timeline.Count == 4 && !timeline.Contains(new DateTime(2000, 1, 1), "TestTime2"));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(4);
+
+                timeline.Contains(new DateTime(2000, 1, 1), "TestTime2")
+                    .Should()
+                    .BeFalse();
+            }
         }
 
         [Test]
@@ -555,13 +869,25 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            timeline.Remove((new DateTime(1995, 1, 1), "TestTime1"), (new DateTime(2000, 1, 1), "TestTime2"));
-            Assert.IsTrue(
-                timeline.Count == 3 &&
-                !timeline.Contains((new DateTime(1995, 1, 1), "TestTime1"), (new DateTime(2000, 1, 1), "TestTime2"))
-            );
+
+            timeline.Remove(
+                (new DateTime(1995, 1, 1), "TestTime1"),
+                (new DateTime(2000, 1, 1), "TestTime2"));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(3);
+
+                timeline.Contains(
+                        (new DateTime(1995, 1, 1), "TestTime1"),
+                        (new DateTime(2000, 1, 1), "TestTime2"))
+                    .Should()
+                    .BeFalse();
+            }
         }
 
         [Test]
@@ -573,10 +899,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             timeline.Remove(new Timeline<string>(new DateTime(2000, 1, 1), "TestTime2"));
-            Assert.IsTrue(timeline.Count == 4 && !timeline.Contains(new DateTime(2000, 1, 1), "TestTime2"));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(4);
+
+                timeline.Contains(new DateTime(2000, 1, 1), "TestTime2")
+                    .Should()
+                    .BeFalse();
+            }
         }
 
         [Test]
@@ -588,10 +925,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            timeline.RemoveTime(new DateTime(2000, 1, 1));
-            Assert.IsTrue(timeline.Count == 4 && !timeline.ContainsTime(new DateTime(2000, 1, 1)));
+
+            timeline.RemoveTimes(new DateTime(2000, 1, 1));
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(4);
+
+                timeline.ContainsTime(new DateTime(2000, 1, 1))
+                    .Should()
+                    .BeFalse();
+            }
         }
 
         [Test]
@@ -603,10 +951,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            timeline.RemoveValue("TestTime1");
-            Assert.IsTrue(timeline.Count == 4 && !timeline.ContainsValue("TestTime1"));
+
+            timeline.RemoveValues("TestTime1");
+
+            using (new AssertionScope())
+            {
+                timeline.Count
+                    .Should()
+                    .Be(4);
+
+                timeline.ContainsValue("TestTime1")
+                    .Should()
+                    .BeFalse();
+            }
         }
 
         [Test]
@@ -618,15 +977,30 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var array = timeline.ToArray();
-            Assert.IsTrue(timeline.Count == array.Length);
-            int i = 0;
-            foreach (var (time, value) in timeline)
+
+            timeline.Count
+                .Should()
+                .Be(array.Length);
+
+            using (new AssertionScope())
             {
-                Assert.IsTrue(time == array[i].Time && value == array[i].Value);
-                i++;
+                var i = 0;
+                foreach (var (time, value) in timeline)
+                {
+                    time
+                        .Should()
+                        .Be(array[i].Time);
+
+                    value
+                        .Should()
+                        .Be(array[i].Value);
+
+                    ++i;
+                }
             }
         }
 
@@ -639,15 +1013,30 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var list = timeline.ToList();
-            Assert.IsTrue(timeline.Count == list.Count);
-            int i = 0;
-            foreach (var (time, value) in timeline)
+
+            timeline.Count
+                .Should()
+                .Be(list.Count);
+
+            using (new AssertionScope())
             {
-                Assert.IsTrue(time == list[i].Time && value == list[i].Value);
-                i++;
+                var i = 0;
+                foreach (var (time, value) in timeline)
+                {
+                    time
+                        .Should()
+                        .Be(list[i].Time);
+
+                    value
+                        .Should()
+                        .Be(list[i].Value);
+
+                    ++i;
+                }
             }
         }
 
@@ -660,16 +1049,18 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var dictionary = timeline.ToDictionary();
-            var timelineList = new System.Collections.Generic.List<(DateTime Time, string Value)>();
+
+            var timelineList = new List<(DateTime Time, string Value)>();
             foreach (var pair in timeline)
             {
                 timelineList.Add(pair);
             }
 
-            var dictionaryList = new System.Collections.Generic.List<(DateTime Time, string Value)>();
+            var dictionaryList = new List<(DateTime Time, string Value)>();
             foreach (var (key, value) in dictionary)
             {
                 dictionaryList.Add((key, value));
@@ -677,10 +1068,23 @@ namespace DataStructures.Tests
 
             timelineList.OrderBy(pair => pair.Time);
             dictionaryList.OrderBy(pair => pair.Time);
-            Assert.IsTrue(timelineList.Count == dictionaryList.Count);
-            for (int i = 0; i < timelineList.Count; i++)
+
+            timelineList.Count
+                .Should()
+                .Be(dictionaryList.Count);
+
+            using (new AssertionScope())
             {
-                Assert.IsTrue(timelineList[i].Time == dictionaryList[i].Time && timelineList[i].Value == dictionaryList[i].Value);
+                for (var i = 0; i < timelineList.Count; ++i)
+                {
+                    timelineList[i].Time
+                        .Should()
+                        .Be(dictionaryList[i].Time);
+
+                    timelineList[i].Value
+                        .Should()
+                        .Be(dictionaryList[i].Value);
+                }
             }
         }
 
@@ -693,18 +1097,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var timeline2 = new Timeline<string>
             {
                 { new DateTime(1995, 1, 1), "TestTime1" },
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
-            // timeline1 is equal to timeline2
-            Assert.IsTrue(timeline1 == timeline2);
+
+            (timeline1 == timeline2)
+                .Should()
+                .BeTrue();
         }
 
         [Test]
@@ -716,18 +1123,21 @@ namespace DataStructures.Tests
                 { new DateTime(2000, 1, 1), "TestTime2" },
                 { new DateTime(2005, 1, 1), "TestTime3" },
                 { new DateTime(2010, 1, 1), "TestTime4" },
-                { new DateTime(2015, 1, 1), "TestTime5" }
+                { new DateTime(2015, 1, 1), "TestTime5" },
             };
+
             var timeline2 = new Timeline<string>
             {
                 { new DateTime(1895, 1, 1), "TestTime6" },
                 { new DateTime(1900, 1, 1), "TestTime7" },
                 { new DateTime(1905, 1, 1), "TestTime8" },
                 { new DateTime(1910, 1, 1), "TestTime9" },
-                { new DateTime(1915, 1, 1), "TestTime10" }
+                { new DateTime(1915, 1, 1), "TestTime10" },
             };
-            // timeline1 is not equal to timeline2
-            Assert.IsTrue(timeline1 != timeline2);
+
+            (timeline1 == timeline2)
+                .Should()
+                .BeFalse();
         }
     }
 }

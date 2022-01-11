@@ -1,18 +1,18 @@
 namespace Algorithms.Numeric.GreatestCommonDivisor
 {
     /// <summary>
-    /// TODO.
+    ///     TODO.
     /// </summary>
     public class EuclideanGreatestCommonDivisorFinder : IGreatestCommonDivisorFinder
     {
         /// <summary>
-        /// Finds greatest common divisor for numbers a and b
-        /// using euclidean algorithm.
+        ///     Finds greatest common divisor for numbers a and b
+        ///     using euclidean algorithm.
         /// </summary>
         /// <param name="a">TODO.</param>
         /// <param name="b">TODO. 2.</param>
         /// <returns>Greatest common divisor.</returns>
-        public int Find(int a, int b)
+        public int FindGcd(int a, int b)
         {
             if (a == 0 && b == 0)
             {

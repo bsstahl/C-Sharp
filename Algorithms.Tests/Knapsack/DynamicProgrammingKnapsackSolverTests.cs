@@ -85,7 +85,9 @@ namespace Algorithms.Tests.Knapsack
 
 
         [Test]
-        public static void TakesHalf([Random(0, 1000, 100, Distinct = true)]int length)
+        public static void TakesHalf(
+            [Random(0, 1000, 100, Distinct = true)]
+            int length)
         {
             //Arrange
             var solver = new DynamicProgrammingKnapsackSolver<int>();
@@ -93,7 +95,7 @@ namespace Algorithms.Tests.Knapsack
             var expectedResult = Enumerable.Repeat(42, length);
 
             //Act
-            var result = solver.Solve(items, length, x => 1, y => 1);
+            var result = solver.Solve(items, length, _ => 1, _ => 1);
 
             //Assert
             Assert.AreEqual(expectedResult, result);

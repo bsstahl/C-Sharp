@@ -3,34 +3,35 @@ using System;
 namespace DataStructures.SegmentTrees
 {
     /// <summary>
-    /// This is an extension of a segment tree, which allows to apply distributive operations to a subarray (in this case muliplication).
+    ///     This is an extension of a segment tree, which allows applying distributive operations to a subarray
+    ///     (in this case multiplication).
     /// </summary>
     public class SegmentTreeApply : SegmentTree
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SegmentTreeApply"/> class.
-        /// Runtime complexity: O(n) where n equals the array-length.
+        ///     Initializes a new instance of the <see cref="SegmentTreeApply" /> class.
+        ///     Runtime complexity: O(n) where n equals the array-length.
         /// </summary>
         /// <param name="arr">Array on which the operations should be made.</param>
         public SegmentTreeApply(int[] arr)
-        : base(arr)
+            : base(arr)
         {
             // Initilizes and fills "operand" array with neutral element (in this case 1, because value * 1 = value)
             Operand = new int[Tree.Length];
-            Array.Fill<int>(Operand, 1);
+            Array.Fill(Operand, 1);
         }
 
         /// <summary>
-        /// Gets an array that stores for each node an operand,
-        /// which must be applied to all direct and indirect child nodes of this node
-        /// (but not to the node itself).
+        ///     Gets an array that stores for each node an operand,
+        ///     which must be applied to all direct and indirect child nodes of this node
+        ///     (but not to the node itself).
         /// </summary>
         public int[] Operand { get; }
 
         /// <summary>
-        /// Applies a distributive operation to a subarray defined by <c>l</c> and <c>r</c>
-        /// (in this case multiplication by <c>value</c>).
-        /// Runtime complexity: O(logN) where N equals the initial array-length.
+        ///     Applies a distributive operation to a subarray defined by <c>l</c> and <c>r</c>
+        ///     (in this case multiplication by <c>value</c>).
+        ///     Runtime complexity: O(logN) where N equals the initial array-length.
         /// </summary>
         /// <param name="l">Left border of the subarray.</param>
         /// <param name="r">Right border of the subarray.</param>
@@ -43,7 +44,7 @@ namespace DataStructures.SegmentTrees
         }
 
         /// <summary>
-        /// Edits a query.
+        ///     Edits a query.
         /// </summary>
         /// <param name="l">Left border of the query.</param>
         /// <param name="r">Right border of the query.</param>
@@ -63,14 +64,14 @@ namespace DataStructures.SegmentTrees
                 return 0;
             }
 
-            int m = (a + b) / 2;
+            var m = (a + b) / 2;
 
             // Application of the saved operand to the direct and indrect child nodes
             return Operand[i] * (Query(l, r, a, m, Left(i)) + Query(l, r, m + 1, b, Right(i)));
         }
 
         /// <summary>
-        /// Applies the operation.
+        ///     Applies the operation.
         /// </summary>
         /// <param name="l">Left border of the Application.</param>
         /// <param name="r">Right border of the Application.</param>
@@ -96,7 +97,7 @@ namespace DataStructures.SegmentTrees
             }
 
             // Calculates index m of the node that cuts the current subarray in half
-            int m = (a + b) / 2;
+            var m = (a + b) / 2;
 
             // Applies the operation to both halfes
             Apply(l, r, value, a, m, Left(i));

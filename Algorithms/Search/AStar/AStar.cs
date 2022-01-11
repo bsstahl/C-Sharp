@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using Algorithms.Search.AStar;
 
-namespace AStar
+namespace Algorithms.Search.AStar
 {
     /// <summary>
-    /// Contains the code for A* Pathfinding.
+    ///     Contains the code for A* Pathfinding.
     /// </summary>
     public static class AStar
     {
         /// <summary>
-        /// Resets the Nodes in the list.
+        ///     Resets the Nodes in the list.
         /// </summary>
         /// <param name="nodes">Resets the nodes to be used again.</param>
         public static void ResetNodes(List<Node> nodes)
@@ -19,19 +18,19 @@ namespace AStar
                 node.CurrentCost = 0;
                 node.EstimatedCost = 0;
                 node.Parent = null;
-                node.State = NodeState.UNCONSIDERED;
+                node.State = NodeState.Unconsidered;
             }
         }
 
         /// <summary>
-        /// Generates the Path from an (solved) node graph, before it gets reset.
+        ///     Generates the Path from an (solved) node graph, before it gets reset.
         /// </summary>
         /// <param name="target">The node where we want to go.</param>
         /// <returns>The Path to the target node.</returns>
         public static List<Node> GeneratePath(Node target)
         {
             var ret = new List<Node>();
-            Node? current = target;
+            var current = target;
             while (!(current is null))
             {
                 ret.Add(current);
@@ -43,7 +42,7 @@ namespace AStar
         }
 
         /// <summary>
-        /// Computes the path from => to.
+        ///     Computes the path from => to.
         /// </summary>
         /// <param name="from">Start node.</param>
         /// <param name="to">end node.</param>
@@ -84,7 +83,7 @@ namespace AStar
                 // Add it to the done list
                 done.Add(current);
 
-                current.State = NodeState.CLOSED;
+                current.State = NodeState.Closed;
 
                 // EndCondition( Path was found )
                 if (current == to)
@@ -96,10 +95,8 @@ namespace AStar
                     ResetNodes(open.GetData());
                     return ret;
                 }
-                else
-                {
-                    AddOrUpdateConnected(current, to, open);
-                }
+
+                AddOrUpdateConnected(current, to, open);
             }
         }
 
@@ -108,18 +105,19 @@ namespace AStar
             foreach (var connected in current.ConnectedNodes)
             {
                 if (!connected.Traversable ||
-                    connected.State == NodeState.CLOSED)
+                    connected.State == NodeState.Closed)
                 {
                     continue; // Do ignore already checked and not traversable nodes.
                 }
 
                 // Adds a previously not "seen" node into the Queue
-                if (connected.State == NodeState.UNCONSIDERED)
+                if (connected.State == NodeState.Unconsidered)
                 {
                     connected.Parent = current;
-                    connected.CurrentCost = current.CurrentCost + current.DistanceTo(connected) * connected.TraversalCostMultiplier;
+                    connected.CurrentCost =
+                        current.CurrentCost + current.DistanceTo(connected) * connected.TraversalCostMultiplier;
                     connected.EstimatedCost = connected.CurrentCost + connected.DistanceTo(to);
-                    connected.State = NodeState.OPEN;
+                    connected.State = NodeState.Open;
                     queue.Enqueue(connected);
                 }
                 else if (current != connected)
@@ -136,7 +134,8 @@ namespace AStar
                 else
                 {
                     // Codacy made me do it.
-                    throw new PathfindingException("Detected the same node twice. Confusion how this could ever happen");
+                    throw new PathfindingException(
+                        "Detected the same node twice. Confusion how this could ever happen");
                 }
             }
         }

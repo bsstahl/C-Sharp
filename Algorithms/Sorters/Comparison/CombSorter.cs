@@ -4,28 +4,24 @@ using System.Collections.Generic;
 namespace Algorithms.Sorters.Comparison
 {
     /// <summary>
-    /// Comb sort is a relatively simple sorting algorithm that improves on bubble sort.
+    ///     Comb sort is a relatively simple sorting algorithm that improves on bubble sort.
     /// </summary>
     /// <typeparam name="T">Type of array element.</typeparam>
     public class CombSorter<T> : IComparisonSorter<T>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CombSorter{T}"/> class.
-        /// </summary>
-        /// <param name="shrinkFactor">Shrink factor used for decreasing the gap.</param>
         public CombSorter(double shrinkFactor = 1.3) => ShrinkFactor = shrinkFactor;
 
         private double ShrinkFactor { get; }
 
         /// <summary>
-        /// Sorts array using specified comparer,
-        /// internal, in-place, unstable,
-        /// worst case performance: O(n^2),
-        /// best case performance: O(n log(n)),
-        /// average performance: O(n^2 / 2^p),
-        /// space complexity: O(1),
-        /// where n - array length and p - number of increments.
-        /// See <a href="https://en.wikipedia.org/wiki/Comb_sort">here</a> for more info.
+        ///     Sorts array using specified comparer,
+        ///     internal, in-place, unstable,
+        ///     worst case performance: O(n^2),
+        ///     best case performance: O(n log(n)),
+        ///     average performance: O(n^2 / 2^p),
+        ///     space complexity: O(1),
+        ///     where n - array length and p - number of increments.
+        ///     See <a href="https://en.wikipedia.org/wiki/Comb_sort">here</a> for more info.
         /// </summary>
         /// <param name="array">Array to sort.</param>
         /// <param name="comparer">Compares elements.</param>
