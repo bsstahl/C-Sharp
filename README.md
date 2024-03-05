@@ -3,10 +3,8 @@
 # The Algorithms - C#
 
 [![Discord chat](https://img.shields.io/discord/808045925556682782.svg?logo=discord&colorB=7289DA)](https://discord.gg/c7MnfGFGa6)
-[![Build Status](https://app.travis-ci.com/TheAlgorithms/C-Sharp.svg?branch=master)](https://app.travis-ci.com/TheAlgorithms/C-Sharp)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/58895a2795bd48a8b3b7eb6ebe22d576)](https://www.codacy.com/gh/TheAlgorithms/C-Sharp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TheAlgorithms/C-Sharp&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/TheAlgorithms/C-Sharp/branch/master/graph/badge.svg)](https://codecov.io/gh/TheAlgorithms/C-Sharp)
-[![GuardRails badge](https://badges.guardrails.io/TheAlgorithms/C-Sharp.svg?token=84805208ba243f0931a74c5148883f894cbe9fd97fe54d64d6d0a89852067548)](https://dashboard.guardrails.io/default/gh/TheAlgorithms/C-Sharp)
 [![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/TheAlgorithms/donate)
 
 ## All Algorithms implemented in C# - for education purposes
@@ -21,6 +19,15 @@ find more than one implementation for the same objective but using different alg
 ## List of Algorithms
 
 * [Algorithms](./Algorithms)
+  * [Crypto](./Algorithms/Crypto/)
+    * [Paddings](./Algorithms/Crypto/Paddings/)
+      * [ISO 10125-2 Padding](./Algorithms/Crypto/Paddings/ISO10126d2Padding.cs)
+      * [ISO 7816-4 Padding](./Algorithms/Crypto/Paddings/ISO7816d4Padding.cs)
+      * [X9.32 Padding](./Algorithms/Crypto/Paddings/X932Padding.cs)
+      * [TBC Padding](./Algorithms/Crypto/Paddings/TbcPadding.cs)
+      * [PKCS7 Padding](./Algorithms/Crypto/Paddings/PKCS7Padding.cs)
+    * [Digests](./Algorithms/Crypto/Digests/)
+      * [MD2 Digest](./Algorithms/Crypto/Digests/Md2Digest.cs)
   * [Data Compression](./Algorithms/DataCompression)
     * [Burrows-Wheeler transform](./Algorithms/DataCompression/BurrowsWheelerTransform.cs)
     * [Huffman Compressor](./Algorithms/DataCompression/HuffmanCompressor.cs)
@@ -32,6 +39,7 @@ find more than one implementation for the same objective but using different alg
     * [NYSIIS](./Algorithms/Encoders/NysiisEncoder.cs)
     * [Soundex](./Algorithms/Encoders/SoundexEncoder.cs)
     * [Feistel](./Algorithms/Encoders/FeistelCipher.cs)
+    * [Blowfish](./Algorithms/Encoders/BlowfishEncoder.cs)
   * [Graph](./Algorithms/Graph)
     * [Minimum Spanning Tree](./Algorithms/Graph/MinimumSpanningTree)
       * [Prim's Algorithm (Adjacency Matrix)](./Algorithms/Graph/MinimumSpanningTree/PrimMatrix.cs)
@@ -80,6 +88,7 @@ find more than one implementation for the same objective but using different alg
     * [Perfect Number Checker](./Algorithms/Numeric/PerfectNumberChecker.cs)
     * [Perfect Square Checker](./Algorithms/Numeric/PerfectSquareChecker.cs)
     * [Euler Method](./Algorithms/Numeric/EulerMethod.cs)
+    * [Classic Runge-Kutta Method](./Algorithms/Numeric/RungeKuttaMethod.cs)
     * [Miller-Rabin primality check](./Algorithms/Numeric/MillerRabinPrimalityChecker.cs)
     * [KrishnamurthyNumberChecker](./Algorithms/Numeric/KrishnamurthyNumberChecker.cs)
     * [Automorphic Number](./Algorithms/Numeric/AutomorphicNumber.cs)
@@ -88,11 +97,13 @@ find more than one implementation for the same objective but using different alg
   * [Searches](./Algorithms/Search)
     * [A-Star](./Algorithms/Search/AStar/)
     * [Binary Search](./Algorithms/Search/BinarySearcher.cs)
-    * [Recursive Binary Search](./Algorithms/Search/RecursiveBinarySearcher.cs)
-    * [Linear Search](./Algorithms/Search/LinearSearcher.cs)
+	* [BoyerMoore Search](./Algorithms/Search/BoyerMoore.cs)
     * [Fast Search](./Algorithms/Search/FastSearcher.cs)
     * [Fibonacci Search](./Algorithms/Search/FibonacciSearcher.cs)
+    * [Interpolation Search](./Algorithms/Search/InterpolationSearch.cs)
     * [Jump Search](./Algorithms/Search/JumpSearcher.cs)
+    * [Linear Search](./Algorithms/Search/LinearSearcher.cs)
+    * [Recursive Binary Search](./Algorithms/Search/RecursiveBinarySearcher.cs)
   * [Sorts](./Algorithms/Sorters)
     * [Comparison](./Algorithms/Sorters/Comparison)
       * [Binary Insertion Sort](./Algorithms/Sorters/Comparison/BinaryInsertionSorter.cs)
@@ -166,17 +177,19 @@ find more than one implementation for the same objective but using different alg
     * [A057588 Kummer Numbers](./Algorithms/Sequences/KummerNumbersSequence.cs)
     * [A019434 Fermat Primes](./Algorithms/Sequences/FermatPrimesSequence.cs)
     * [A181391 Van Eck's](./Algorithms/Sequences/VanEcksSequence.cs)
-  * [String](./Algorithms/Strings)
-    * [Longest Consecutive Character](./Algorithms/Strings/GeneralStringAlgorithms.cs)
-    * [Naive String Search](./Algorithms/Strings/NaiveStringSearch.cs)
-    * [Rabin Karp](./Algorithms/Strings/RabinKarp.cs)
-    * [Boyer Moore](./Algorithms/Strings/BoyerMoore.cs)
+  * [String](./Algorithms/Strings) 
+    * [Similarity](./Algorithms/Strings/Similarity/)
+      * [Hamming Distance](./Algorithms/Strings/HammingDistance.cs)
+      * [Jaro Similarity](./Algorithms/Strings/JaroSimilarity.cs)
+      * [Jaro-Winkler Distance](./Algorithms/Strings/JaroWinklerDistance.cs)
+    * [Pattern Matching](./Algorithms/Strings/PatternMatching/) 
+      * [Longest Consecutive Character](./Algorithms/Strings/PatternMatching/GeneralStringAlgorithms.cs)
+      * [Naive String Search](./Algorithms/Strings/PatternMatching/NaiveStringSearch.cs)
+      * [Rabin Karp](./Algorithms/Strings/PatternMatching/RabinKarp.cs)
+      * [Boyer Moore](./Algorithms/Strings/PatternMatching/BoyerMoore.cs)
     * [Palindrome Checker](./Algorithms/Strings/Palindrome.cs)
     * [Get all permutations of a string](./Algorithms/Strings/Permutation.cs)
-    * [Levenshtein Distance](./Algorithms/Strings/LevenshteinDistance.cs)
-    * [Hamming Distance](./Algorithms/Strings/HammingDistance.cs)
-    * [Jaro Similarity](./Algorithms/Strings/JaroSimilarity.cs)
-    * [Jaro-Winkler Distance](./Algorithms/Strings/JaroWinklerDistance.cs)
+    
     * [Z-block substring search](./Algorithms/Strings/ZblockSubstringSearch.cs)
   * [Other](./Algorithms/Other)
     * [Fermat Prime Checker](./Algorithms/Other/FermatPrimeChecker.cs)
@@ -201,8 +214,9 @@ find more than one implementation for the same objective but using different alg
       * [Proposer](./Algorithms/Problems/StableMarriage/Proposer.cs)
     * [N-Queens](./Algorithms/Problems/NQueens)
       * [Backtracking](./Algorithms/Problems/NQueens/BacktrackingNQueensSolver.cs)
-    * [Dynamic Coin Change](./Algorithms/Problems/CoinChange)
-      * [Dynamic](./Algorithms/Problems/CoinChange/DynamicCoinChangeSolver.cs)
+    * [Dynamic Programming](./Algorithms/Problems/DynamicProgramming)
+      * [Coin Change](./Algorithms/Problems/DynamicProgramming/CoinChange/DynamicCoinChangeSolver.cs)
+      * [Levenshtein Distance](./Algorithms/Problems/DynamicProgramming/LevenshteinDistance/LevenshteinDistance.cs)
 
 * [Data Structures](./DataStructures)
   * [Bit Array](./DataStructures/BitArray.cs)
@@ -220,6 +234,7 @@ find more than one implementation for the same objective but using different alg
   * [Stack](./DataStructures/Stack)
     * [Array-based Stack](./DataStructures/Stack/ArrayBasedStack.cs)
     * [List-based Stack](./DataStructures/Stack/ListBasedStack.cs)
+    * [Queue-based Stack](./DataStructures/Stack/QueueBasedStack.cs)
   * [Heap](./DataStructures/Heap)
     * [Min-Max Heap](./DataStructures/Heap/MinMaxHeap.cs)
     * [Binary Heap](./DataStructures/Heap/BinaryHeap.cs)
@@ -244,10 +259,29 @@ find more than one implementation for the same objective but using different alg
   * [Inverted index](./DataStructures/InvertedIndex.cs)
   * [Unrolled linked list](./DataStructures/UnrolledList/UnrolledLinkedList.cs)
   * [Tries](./DataStructures/Tries/Trie.cs)
+  * [HashTable](./DataStructures/Hashing/HashTable.cs)
   * [Cache](./DataStructures/Cache)
     * [Least Frequently Used (LFU) Cache](./DataStructures/Cache/LfuCache.cs)
     * [Least Recently Used (LRU) Cache](./DataStructures/Cache/LruCache.cs)
 
+## Project Update: .NET 8 Migration
+
+As part of our continuous effort to stay up-to-date with the latest technologies, we have migrated our project to .NET 8. This upgrade enhances our project with the latest features and improvements from the .NET ecosystem.
+
+### New Requirements
+
+* To build and run this project, **.NET 8 SDK** is now required.
+* Ensure your development tools are compatible with .NET 8.
+
+### Building the Project
+
+* With .NET 8 SDK installed, you can build the project using the standard `dotnet build` command.
+* All existing build scripts have been updated to accommodate the .NET 8 SDK.
+
+### Running Tests
+
+* Our comprehensive suite of unit tests ensures compatibility with .NET 8.
+* Run tests using the `dotnet test` command as usual.
 
 ## Contributing
 

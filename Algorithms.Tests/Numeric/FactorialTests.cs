@@ -1,42 +1,39 @@
-﻿using System;
+using System;
+using System.Numerics;
 using Algorithms.Numeric;
 using NUnit.Framework;
 
-namespace Algorithms.Tests.Numeric
+namespace Algorithms.Tests.Numeric;
+
+public static class FactorialTests
 {
-    public static class FactorialTests
+    [TestCase(0, "1")]
+    [TestCase(1, "1")]
+    [TestCase(4, "24")]
+    [TestCase(10, "3628800")]
+    [TestCase(18, "6402373705728000")]
+    public static void GetsFactorial(int input, string expected)
     {
-        [Test]
-        [TestCase(5, 120)]
-        [TestCase(1, 1)]
-        [TestCase(0, 1)]
-        [TestCase(4, 24)]
-        [TestCase(18, 6402373705728000)]
-        [TestCase(10, 3628800)]
-        public static void GetsFactorial(int input, long expected)
-        {
-            // Arrange
+        // Arrange
+        BigInteger expectedBigInt = BigInteger.Parse(expected);
 
-            // Act
-            var result = Factorial.Calculate(input);
+        // Act
+        var result = Factorial.Calculate(input);
 
-            // Assert
-            Assert.AreEqual(expected, result);
-        }
+        // Assert
+        Assert.That(result, Is.EqualTo(expectedBigInt));
+    }
 
-        [Test]
-        public static void GetsFactorialExceptionForNonPositiveNumbers(
-            [Random(-1000, -1, 10, Distinct = true)]
-            int input)
-        {
-            // Arrange
+    [TestCase(-5)]
+    [TestCase(-10)]
+    public static void GetsFactorialExceptionForNegativeNumbers(int num)
+    {
+        // Arrange
 
-            // Act
-            void Act() => Factorial.Calculate(input);
+        // Act
+        void Act() => Factorial.Calculate(num);
 
-            // Assert
-
-            _ = Assert.Throws<ArgumentException>(Act);
-        }
+        // Assert
+        _ = Assert.Throws<ArgumentException>(Act);
     }
 }
