@@ -25,19 +25,9 @@ public class BinarySearchTree<TKey>
     /// </summary>
     public BinarySearchTreeNode<TKey>? Root { get; private set; }
 
-    public BinarySearchTree()
-    {
-        Root = null;
-        Count = 0;
-        comparer = Comparer<TKey>.Default;
-    }
+    public BinarySearchTree() => (Root, Count, comparer) = (null, 0, Comparer<TKey>.Default);
 
-    public BinarySearchTree(Comparer<TKey> customComparer)
-    {
-        Root = null;
-        Count = 0;
-        comparer = customComparer;
-    }
+    public BinarySearchTree(Comparer<TKey> customComparer) => (Root, Count, comparer) = (null, 0, customComparer);
 
     /// <summary>
     ///     Gets the number nodes currently in the BST.
@@ -323,9 +313,10 @@ public class BinarySearchTree<TKey>
     {
         if (node is null)
         {
-            return new List<TKey>();
+            return [];
         }
 
+        // Use mutable list approach instead of spread operator for better performance
         var result = new List<TKey>();
         result.AddRange(GetKeysInOrder(node.Left));
         result.Add(node.Key);
@@ -342,11 +333,14 @@ public class BinarySearchTree<TKey>
     {
         if (node is null)
         {
-            return new List<TKey>();
+            return [];
         }
 
-        var result = new List<TKey>();
-        result.Add(node.Key);
+        // Use mutable list approach instead of spread operator for better performance
+        var result = new List<TKey>
+        {
+            node.Key,
+        };
         result.AddRange(GetKeysPreOrder(node.Left));
         result.AddRange(GetKeysPreOrder(node.Right));
         return result;
@@ -361,9 +355,10 @@ public class BinarySearchTree<TKey>
     {
         if (node is null)
         {
-            return new List<TKey>();
+            return [];
         }
 
+        // Use mutable list approach instead of spread operator for better performance
         var result = new List<TKey>();
         result.AddRange(GetKeysPostOrder(node.Left));
         result.AddRange(GetKeysPostOrder(node.Right));
